@@ -1,0 +1,16 @@
+.BoardContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+    height: 70vh;
+}
+
+.Board {
+    width: 350px;
+    height: 420px;
+
+    display: flex;
+    flex-direction: column;
+}

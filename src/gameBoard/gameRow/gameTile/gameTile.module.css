@@ -1,0 +1,12 @@
+.GameTileContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.GameTile {
+    width: 62px;
+    height: 62px;
+    margin: 0;
+    border: 1px solid red;
+    margin-bottom: 7px;
+}

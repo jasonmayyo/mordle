@@ -1,0 +1,34 @@
+.keyboardContainer {
+    position: absolute;
+    bottom: 0;
+    width: 25%;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.Key {
+    height: 58px;
+    width: 30px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    margin: 5px 6px 0 0;
+}
+
+.Enter {
+    height: 58px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    margin: 5px 6px 0 0;
+    font-size: 10px;
+}
+
+.Backspace {
+    height: 58px;
+    width: 40px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    margin: 5px 6px 0 0;
+}
