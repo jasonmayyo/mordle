@@ -3,6 +3,8 @@ import GameKeyboard from '../gameKeyboard/gameKeyboard'
 import GameBoard from '../gameBoard/gameBoard'
 import classes from './game.module.css'
 
+import CryptoJS from 'crypto-js'
+
 
 class Game extends Component {
     state = {
@@ -29,11 +31,15 @@ class Game extends Component {
     }
 
     componentDidMount = () => {
-        const word = this.props.word.split('')
+        const encrypted = this.props.word;
+        const decrypted = CryptoJS.DES.decrypt(encrypted, "Jason8104");
+        const string = decrypted.toString(CryptoJS.enc.Utf8)
+        const goldenWord = string.split('')
         this.setState({
             name: this.props.name,
-            goldenWord: word
+            goldenWord: goldenWord
         })
+        console.log(goldenWord)
     }
 
 

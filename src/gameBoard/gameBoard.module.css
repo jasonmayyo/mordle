@@ -27,8 +27,7 @@
     }
 }
 
-
-@media screen and (max-height: 667px) {
+@media screen and (max-height: 699px) {
     .Board {
         width: 55%;
         height: 40vh;

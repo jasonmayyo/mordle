@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import classes from './createWordle.module.css'
+import CryptoJS from 'crypto-js'
 
 const CreateWorlde = (props) => {
 
@@ -29,7 +30,8 @@ const CreateWorlde = (props) => {
     }
 
     const createLink = () => {
-        const Link = `https://wordlewithfriend.web.app/game/${name}/${word.toUpperCase()}`
+        const encryptedWord = encodeURIComponent(CryptoJS.DES.encrypt(`${word.toUpperCase()}`, 'Jason8104'));
+        const Link = `https://wordlewithfriend.web.app/game/${name}/${encryptedWord}`
         navigator.clipboard.writeText(Link);
         setCopied(true)
         setBtnText('Link Copied!')

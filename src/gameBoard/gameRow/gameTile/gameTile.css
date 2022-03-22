@@ -73,11 +73,11 @@
 }
 
 
-@media screen and (max-height: 667px) {
+@media screen and (max-height: 699px) {
     .D, .Green, .Orange, .Grey {
         width: 35px;
         height: 35px;
-        font-size: 20px;
+        font-size: 18px;
     }
 
     .GameTileContainer {
