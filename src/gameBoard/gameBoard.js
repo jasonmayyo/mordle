@@ -1,21 +1,20 @@
 import classes from './gameBoard.module.css';
 import React from 'react'
 
-import GameRow from './gameRow/gameRow'
+import GameRow from './gameRow/gameRow.module'
 
 const gameBoard = (props) => {
     return (
         <div className={classes.BoardContainer}>
             <div className={classes.Board}>
-                <GameRow row1={props.row1}/>
-                <GameRow row1={props.row1}/>
-                <GameRow row1={props.row1}/>
-                <GameRow row1={props.row1}/>
-                <GameRow row1={props.row1}/>
-                <GameRow row1={props.row1}/>
-                
+                {props.rows.map( (row, index) => (
+                    <GameRow 
+                        row={row}
+                        key={index}
+                        rowReveal={props.rowsReveal[index]}
+                    />
+                ))}
             </div>
-            
         </div>
     );
 };

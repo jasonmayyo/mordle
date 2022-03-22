@@ -1,0 +1,127 @@
+.Header {
+    height: 51px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    border-bottom: 1px solid #3a3a3c96;
+  }
+  
+  .Logo {
+    margin: 0px;
+    padding: 0px;
+    color: white;
+  }
+
+
+.CreateWordle {
+    height: 100vh;
+    width: 100%;
+    background-color: #121214;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Welcome {
+    color: white;
+    margin: 0;
+    margin-top: 50px;
+    font-size: 20px;
+}
+
+.Sub {
+    color: white;
+    margin: 0;
+    font-size: 14px;
+
+}
+
+.InputContainer {
+    width: 30%;
+    margin-top: 20px;
+    
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.Label {
+    color: white;
+    margin: 0;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    font-weight: 600;
+    padding-left: 30px;
+}
+
+.Input {
+    border: 0px;
+    outline: none;
+    width: 80%;
+    padding: 10px;
+    font-size: 18px;
+    margin-left: 30px;
+    font-weight: 800;
+    box-sizing: border-box;
+}
+
+.Button {
+    border: 0px;
+    outline: none;
+    width: 80%;
+    padding: 15px 10px;
+    font-size: 18px;
+    font-weight: 800;
+    background: #57575a83;
+    color: white;
+    border-radius: 2px;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+
+.Button:hover {
+    cursor: pointer;
+}
+
+.Copied {
+    border: 0px;
+    outline: none;
+    width: 80%;
+    padding: 15px 10px;
+    font-size: 18px;
+    font-weight: 800;
+    background: #538d4e;
+    color: white;
+    border-radius: 2px;
+    margin-top: 20px;
+    margin-left: 30px;
+}
+
+.Copied:hover {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    .InputContainer {
+        width: 90%;
+    }
+
+    .Label {
+        padding-left: 0px;
+    }
+
+    .Input {
+        margin-left: 0px;
+        width: 100%;
+        padding: 15px 5px;
+    }
+
+    .Button, .Next, .Copied{
+        margin-left: 0px;
+        width: 100%;
+    }
+}

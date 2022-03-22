@@ -1,0 +1,86 @@
+.GameTileContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.D {
+    width: 62px;
+    height: 62px;
+    margin: 0;
+    border: 1px solid #818384;
+    margin-bottom: 7px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 28px;
+
+    color: white;
+}
+
+.Green {
+    width: 62px;
+    height: 62px;
+    margin: 0;
+    border: 1px solid #538d4e;
+    margin-bottom: 7px;
+    background-color: #538d4e;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 28px;
+
+    color: white;
+
+}
+
+.Orange {
+    width: 62px;
+    height: 62px;
+    margin: 0;
+    border: 1px solid #b59f3b;
+    margin-bottom: 7px;
+    background-color: #b59f3b;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 28px;
+
+    color: white;
+
+}
+
+.Grey {
+    width: 62px;
+    height: 62px;
+    margin: 0;
+    border: 1px solid #3a3a3c;
+    margin-bottom: 7px;
+    background-color: #3a3a3c;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    font-size: 28px;
+
+    color: white;
+
+}
+
+
+@media screen and (max-height: 667px) {
+    .D, .Green, .Orange, .Grey {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+    }
+
+    .GameTileContainer {
+        align-items: center;
+    }
+}

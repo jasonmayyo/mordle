@@ -14,17 +14,17 @@ const gameKeyboard = (props) => {
 
     return (
         <div className={classes.keyboardContainer}>
-            <div>
+            <div className={classes.keysRow}>
                 {letters1.map( letter => (
                     <button className={classes.Key} key={letter} onClick={() => letterClicked(letter)}>{letter}</button>
                 ))}
             </div>
-            <div>
+            <div className={classes.keysRow}>
                 {letters2.map( letter => (
                     <button className={classes.Key} key={letter} onClick={() => letterClicked(letter)}>{letter}</button>
                 ))}
             </div>
-            <div>
+            <div className={classes.keysRow}>
                 <button className={classes.Enter} onClick={props.enterWord}> ENTER </button>
                 {letters3.map( letter => (
                     <button className={classes.Key} key={letter} onClick={() => letterClicked(letter)}>{letter}</button>

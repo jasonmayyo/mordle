@@ -6,7 +6,10 @@ const GameRow = (props) => {
 
     return (
         <div className={classes.GameRow}>
-            <GameTile row1={props.row1}/>
+            <GameTile 
+                row={props.row}
+                rowReveal={props.rowReveal}
+            />
         </div>
     )
 };

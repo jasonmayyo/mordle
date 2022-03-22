@@ -2,9 +2,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
     overflow: hidden;
-    height: 70vh;
+    height: calc(100% - 250px);
+
+    background-color: #121214;
+    overflow: scroll;
+    width: 100%;
 }
 
 .Board {
@@ -13,4 +16,27 @@
 
     display: flex;
     flex-direction: column;
+}
+
+
+@media screen and (max-width: 425px) {
+    .BoardContainer {
+        display: flex;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+}
+
+
+@media screen and (max-height: 667px) {
+    .Board {
+        width: 55%;
+        height: 40vh;
+    }
+
+    .BoardContainer {
+        display: flex;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
 }

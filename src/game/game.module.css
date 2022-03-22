@@ -1,5 +1,27 @@
+.Header {
+    height: 51px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    border-bottom: 1px solid #3a3a3c96;
+  }
+  
+  .Logo {
+    margin: 0px;
+    padding: 0px;
+    color: white;
+  }
+
+
+
 .Game {
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100vh;
+
+    background-color: #121214;
 }
+
