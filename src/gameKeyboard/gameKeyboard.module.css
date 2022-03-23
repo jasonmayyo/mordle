@@ -14,7 +14,7 @@
     width: 100%;
 }
 
-.Key {
+.D {
     height: 58px;
     width: 30px;
     border-radius: 4px;
@@ -26,6 +26,47 @@
     color: white;
     font-weight: 600;
 }
+
+.Green {
+    height: 58px;
+    width: 30px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    margin: 5px 6px 0 0;
+
+    background-color: #538d4e;
+    color: white;
+    font-weight: 600;
+}
+
+.Orange {
+    height: 58px;
+    width: 30px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    margin: 5px 6px 0 0;
+
+    background-color: #b59f3b;
+    color: white;
+    font-weight: 600;
+}
+
+.Grey {
+    height: 58px;
+    width: 30px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    margin: 5px 6px 0 0;
+
+    background-color: #3a3a3c;
+    color: white;
+    font-weight: 600;
+}
+
+
 
 .Enter {
     height: 58px;

@@ -2,7 +2,9 @@ import React, {Component} from 'react'
 import GameKeyboard from '../gameKeyboard/gameKeyboard'
 import GameBoard from '../gameBoard/gameBoard'
 import classes from './game.module.css'
-
+import {Link} from 'react-router-dom'
+import {AiOutlineCloseCircle} from 'react-icons/ai'
+import {BsFillShareFill} from 'react-icons/bs'
 import CryptoJS from 'crypto-js'
 
 
@@ -27,7 +29,8 @@ class Game extends Component {
             ['D', 'D', 'D', 'D', 'D'],
             ['D', 'D', 'D', 'D', 'D'],
         ],
-        name: ''
+        name: '',
+        endGame: false,
     }
 
     componentDidMount = () => {
@@ -100,14 +103,42 @@ class Game extends Component {
                 alert('Not in word list')
             }
         }
+
+        if (this.state.activeRow >= 5) {
+            this.setState({
+                endGame: true
+            })
+        }
         
     }
 
     checkLetterPositionHandler = () => {
         const word = this.state.rows[this.state.activeRow]
         const goldenWord = this.state.goldenWord
-        //const doubleLetter = word.filter( (letter , index) => word.indexOf(`${letter}`) !== index)
-        //const goldenDoubleLetter = goldenWord.filter( (letter, index) => goldenWord.indexOf(`${letter}`) !== index)
+        const doubleLetter = word.filter( (letter , index) => word.indexOf(`${letter}`) !== index)
+        const goldenDoubleLetter = goldenWord.filter( (letter, index) => goldenWord.indexOf(`${letter}`) !== index)
+        const wordle = this.state.rows[this.state.activeRow].join('').toLowerCase()
+        const goldenWordle = this.state.goldenWord.join('').toLowerCase();
+
+        // if (goldenDoubleLetter) {
+        //     find = (goldenDoubleLetter, goldenWord) => {
+        //         const indexes = [],
+        //         const index = goldenWord.indexOf(goldenDoubleLetter);
+        //         while (index != -1) {
+        //             indexes.push(index)
+        //             index = goldenWord.indexOf(goldenDoubleLetter, index + 1)
+        //         }
+        //         return indexes
+        //     }
+        // }
+
+        // console.log( find(goldenDoubleLetter, goldenWord) )
+
+        if (wordle === goldenWordle) {
+            this.setState({
+                endGame: true
+            })
+        }
 
         const rowsReveal = this.state.rowsReveal
         const rowReveal = rowsReveal[this.state.activeRow]
@@ -137,6 +168,25 @@ class Game extends Component {
          })
     }
 
+    share = () => {
+        const rows = this.state.rowsReveal
+
+        rows.forEach(row => {
+            const shareRow = row
+            const Green = row.indexOf('Green')
+            const Orange = row.indexOf('Orange')
+            const Grey = row.indexOf('Grey')
+
+            shareRow[Green] = '🟩'
+            shareRow[Orange] = '🟨'
+            shareRow[Grey] = '⬛'
+
+            console.log(shareRow)
+        });
+
+
+    }
+
     render() {
         return (
             <div className={classes.Game}>
@@ -151,7 +201,18 @@ class Game extends Component {
                     setLetter={this.setLetterHandler}
                     removeLetter={this.removeLetterHandler}
                     enterWord={this.enterWordHandler}
+                    guessedWord={this.state.rows[this.state.activeRow]}
+                    wordColors={this.state.rowsReveal[this.state.activeRow]}
                 />
+                {this.state.endGame ? 
+                    <div className={classes.EndGameModal}>
+                        <AiOutlineCloseCircle className={classes.Close} onClick={() => this.setState({endGame: false})}/>
+                        <p className={classes.EndGameText}>{this.state.name}'s word was</p>
+                        <h1 className={classes.Word}>{this.state.goldenWord.join('')}</h1>
+                        <Link className={classes.Button} to="/">Create a word</Link>
+                        <button className={classes.ShareButton} onClick={this.share}>Share <BsFillShareFill style={{paddingLeft: '10px'}}/></button>
+                    </div>
+                : null}
             </div>
         );
     }  

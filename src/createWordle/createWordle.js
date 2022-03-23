@@ -60,6 +60,7 @@ const CreateWorlde = (props) => {
                 >
                     {btnText}
                 </button>
+                {copied ? <p style={{color: 'white'}}>A shareable link has been created and copied. Send it to your friends!</p> : null}
             </div>
         </div>
     )
