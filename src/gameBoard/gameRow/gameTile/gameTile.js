@@ -6,7 +6,7 @@ const GameTile = (props) => {
     return (
         <div className='GameTileContainer'>
             {props.row.map( (letter, index) => {
-                return <p className={props.rowReveal[index]} key={index}>{letter}</p>
+                return <p className={props.rowReveal[index]} key={index}>{letter} </p>
             })}
         </div>
     )

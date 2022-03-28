@@ -7,27 +7,25 @@
     margin-bottom: 20px;
 
     background-color: #121214;
-
 }
 
-.keyRow {
-    width: 100%;
-}
 
-.D {
+
+.KeyBoardD {
     height: 58px;
     width: 30px;
     border-radius: 4px;
     outline: none;
     border: none;
-    margin: 5px 6px 0 0;
+    margin:5px 6px 0 0;
 
     background-color: #818384;
     color: white;
     font-weight: 600;
+    flex-grow: 1;
 }
 
-.Green {
+.KeyBoardGreen {
     height: 58px;
     width: 30px;
     border-radius: 4px;
@@ -40,7 +38,7 @@
     font-weight: 600;
 }
 
-.Orange {
+.KeyBoardOrange {
     height: 58px;
     width: 30px;
     border-radius: 4px;
@@ -53,7 +51,7 @@
     font-weight: 600;
 }
 
-.Grey {
+.KeyBoardGrey {
     height: 58px;
     width: 30px;
     border-radius: 4px;
@@ -98,7 +96,6 @@
 
 
 }
-
 
 @media screen and (max-width: 900px) {
     .keyboardContainer {

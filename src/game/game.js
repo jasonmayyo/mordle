@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom'
 import {AiOutlineCloseCircle} from 'react-icons/ai'
 import {BsFillShareFill} from 'react-icons/bs'
 import CryptoJS from 'crypto-js'
+import Aux from '../hoc/Aux'
 
 
 class Game extends Component {
@@ -30,7 +31,9 @@ class Game extends Component {
             ['D', 'D', 'D', 'D', 'D'],
         ],
         name: '',
-        endGame: false,
+        endGameModal: false,
+        shared: false,
+        endGame: false
     }
 
     componentDidMount = () => {
@@ -57,14 +60,16 @@ class Game extends Component {
     
     setLetterHandler = (letter) => {
         this.changePositionHandler()
-        if (this.state.postion < 5) {
-            let rows = [...this.state.rows]
-            let row = [...this.state.rows[this.state.activeRow]]
-            row[this.state.postion] = letter
-            rows[this.state.activeRow] = row
-            this.setState({
-               rows: rows
-            })
+        if (!this.state.endGame) {
+            if (this.state.postion < 5) {
+                let rows = [...this.state.rows]
+                let row = [...this.state.rows[this.state.activeRow]]
+                row[this.state.postion] = letter
+                rows[this.state.activeRow] = row
+                this.setState({
+                   rows: rows
+                })
+            }
         }
         
     }
@@ -106,7 +111,7 @@ class Game extends Component {
 
         if (this.state.activeRow >= 5) {
             this.setState({
-                endGame: true
+                endGameModal: true
             })
         }
         
@@ -136,6 +141,7 @@ class Game extends Component {
 
         if (wordle === goldenWordle) {
             this.setState({
+                endGameModal: true,
                 endGame: true
             })
         }
@@ -169,22 +175,37 @@ class Game extends Component {
     }
 
     share = () => {
-        const rows = this.state.rowsReveal
+        const newRows = [...this.state.rowsReveal]
 
-        rows.forEach(row => {
-            const shareRow = row
-            const Green = row.indexOf('Green')
-            const Orange = row.indexOf('Orange')
-            const Grey = row.indexOf('Grey')
-
-            shareRow[Green] = '🟩'
-            shareRow[Orange] = '🟨'
-            shareRow[Grey] = '⬛'
-
-            console.log(shareRow)
+        newRows.forEach(row => {
+            row.forEach( (color, index) => {
+                if (color === 'Green') {
+                    row[index] = '🟩'
+                } else if (color === 'Orange') {
+                    row[index] = '🟨'
+                } else if (color === 'Grey') {
+                    row[index] = '⬛'
+                } else {
+                    row[index] = '‏‏‎'
+                }
+            })
         });
 
 
+        const shared = `${this.state.name}'s word was ${this.state.goldenWord.join('')}
+
+        ${newRows[0].join('')}
+        ${newRows[1].join('')}
+        ${newRows[2].join('')}
+        ${newRows[3].join('')}
+        ${newRows[4].join('')}
+        ${newRows[5].join('')}
+
+        `
+        navigator.clipboard.writeText(shared);
+        this.setState({
+            shared: true
+        })
     }
 
     render() {
@@ -204,14 +225,21 @@ class Game extends Component {
                     guessedWord={this.state.rows[this.state.activeRow]}
                     wordColors={this.state.rowsReveal[this.state.activeRow]}
                 />
-                {this.state.endGame ? 
-                    <div className={classes.EndGameModal}>
-                        <AiOutlineCloseCircle className={classes.Close} onClick={() => this.setState({endGame: false})}/>
-                        <p className={classes.EndGameText}>{this.state.name}'s word was</p>
-                        <h1 className={classes.Word}>{this.state.goldenWord.join('')}</h1>
-                        <Link className={classes.Button} to="/">Create a word</Link>
-                        <button className={classes.ShareButton} onClick={this.share}>Share <BsFillShareFill style={{paddingLeft: '10px'}}/></button>
-                    </div>
+                {this.state.endGameModal ? 
+                    <Aux>
+                        <div className={classes.EndGameModal}>
+                            <AiOutlineCloseCircle className={classes.Close} onClick={() => this.setState({endGameModal: false})}/>
+                            <p className={classes.EndGameText}>{this.state.name}'s word was</p>
+                            <h1 className={classes.Word}>{this.state.goldenWord.join('')}</h1>
+                            <Link className={classes.Button} to="/">Create a word</Link>
+                            <button className={classes.ShareButton} onClick={this.share}>Share <BsFillShareFill style={{paddingLeft: '10px'}}/></button>
+                        </div>
+                        {this.state.shared ? 
+                            <div className={classes.Copied}>
+                                Results copied to clipboard 🟩 
+                            </div>
+                        : null}
+                    </Aux>
                 : null}
             </div>
         );

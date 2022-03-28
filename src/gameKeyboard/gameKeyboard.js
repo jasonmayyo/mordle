@@ -1,58 +1,173 @@
-import classes from './gameKeyboard.module.css';
-import React from 'react'
+import './gameKeyboard.css';
+import React, { Component } from 'react'
 import {BsBackspace, BsConeStriped} from 'react-icons/bs'
 
-const gameKeyboard = (props) => {
+class gameKeyboard extends Component {
 
-    const letterClicked = (letter) => {
-        props.setLetter(letter)
+    letterClicked = (letter) => {
+        this.props.setLetter(letter)
     }
 
-    // const setColor = () => {
-    //     const word = props.guessedWord
-    //     const wordColors = props.wordColors
+    state = {
+        letters:[
+        {
+            Letter: 'Q',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'W',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'E',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'R',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'T',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'Y',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'U',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'I',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'O',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'P',
+            Status: 'KeyBoardD',
+            EndLetter: 'EndLetter'
+        },
+        {
+            Letter: 'A',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'S',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'D',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'F',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'G',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'H',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'J',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'K',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'L',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'Z',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'X',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'C',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'V',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'B',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'N',
+            Status: 'KeyBoardD'
+        },
+        {
+            Letter: 'M',
+            Status: 'KeyBoardD'
+        },
 
-    //     wordColors.forEach( (Color, index) => {
-    //         if(Color === 'Green') {
-    //             console.log(`${word[index]} is ${Color}`)
-    //         } else if (Color === 'Orange') {
-    //             console.log(`${word[index]} is ${Color}`)
-    //         } else {
-    //             console.log(`${word[index]} is ${Color}`)
-    //         }
-    //     });
-    // }
+    ]
+}
+   
+    updateKeyboard = () => {
+        const updatedLetters = [...this.state.letters]
+        const guessedWord = this.props.guessedWord
+        const colorLetters = this.props.wordColors
 
-    let letters1 = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P']
-    let letters2 = ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ]
-    let letters3 = ['Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+        this.props.enterWord()
 
-    return (
-        <div className={classes.keyboardContainer}>
-            <div className={classes.keysRow}>
-                {letters1.map( letter => (
-                    <button className={classes.D} key={letter} onClick={() => letterClicked(letter)}>{letter}</button>
-                ))}
-            </div>
-            <div className={classes.keysRow}>
-                {letters2.map( letter => (
-                    <button className={classes.D} key={letter} onClick={() => letterClicked(letter)}>{letter}</button>
-                ))}
-            </div>
-            <div className={classes.keysRow}>
-                <button className={classes.Enter} onClick={props.enterWord}> ENTER </button>
-                {letters3.map( letter => (
-                    <button className={classes.D} key={letter} onClick={() => letterClicked(letter)}>{letter}</button>
-                ))}
-            <button className={classes.Backspace} onClick={props.removeLetter} > <BsBackspace/> </button>
+        guessedWord.forEach( (guessedLetter, guessedIndex) => {
+            const index = updatedLetters.map(Letter => Letter.Letter).indexOf(guessedLetter)
 
-            </div>
-            
-        </div>
-       
-    )
+            updatedLetters[index].Status = `KeyBoard${colorLetters[guessedIndex]}`
+            this.setState({
+                letters: updatedLetters
+            })
+        });
     
+    };
+
+    render () {
+        const letters1 = this.state.letters.slice(0, 10)
+        const letters2 = this.state.letters.slice(10, 19)
+        const letters3 = this.state.letters.slice(19, 27)
+
+
+
+        return (
+            <div className='keyboardContainer'>
+                <div className='keysRow'>
+                    {letters1.map( letter => {
+                        return <button className={letter.Status} key={letter.Letter} onClick={() => this.letterClicked(letter.Letter)}>{letter.Letter}</button>
+                    })}
+                </div>
+                <div className='keysRow'>
+                    {letters2.map( letter => {
+                        return <button className={letter.Status} key={letter.Letter} onClick={() => this.letterClicked(letter.Letter)}>{letter.Letter}</button>
+                    })}
+                </div>
+                <div className='keysRow'>
+                    <button className='Enter' onClick={this.updateKeyboard}> ENTER </button>
+                    {letters3.map( letter => {
+                        return <button className={letter.Status} key={letter.Letter} onClick={() => this.letterClicked(letter.Letter)}>{letter.Letter}</button>
+                    })}
+                    <button className='Backspace' onClick={this.props.removeLetter} > <BsBackspace/> </button>
+                </div>
+            </div>
+        
+        )
+    } 
 };
 
 
-export default gameKeyboard
+export default gameKeyboard;

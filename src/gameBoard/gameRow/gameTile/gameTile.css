@@ -18,7 +18,7 @@
     color: white;
 }
 
-.Green {
+.Green, .🟩 {
     width: 62px;
     height: 62px;
     margin: 0;
@@ -36,7 +36,7 @@
 
 }
 
-.Orange {
+.Orange, .🟨 {
     width: 62px;
     height: 62px;
     margin: 0;
@@ -54,7 +54,7 @@
 
 }
 
-.Grey {
+.Grey, .⬛ {
     width: 62px;
     height: 62px;
     margin: 0;
