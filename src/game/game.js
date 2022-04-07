@@ -4,8 +4,8 @@ import GameBoard from '../gameBoard/gameBoard'
 import classes from './game.module.css'
 import {Link} from 'react-router-dom'
 import {AiOutlineCloseCircle} from 'react-icons/ai'
-import {BsFillShareFill} from 'react-icons/bs'
-import CryptoJS from 'crypto-js'
+import {BsConeStriped, BsFillShareFill} from 'react-icons/bs'
+import CryptoJS, { enc } from 'crypto-js'
 import Aux from '../hoc/Aux'
 
 
@@ -33,19 +33,42 @@ class Game extends Component {
         name: '',
         endGameModal: false,
         shared: false,
-        endGame: false
+        endGame: false,
+        url: ''
     }
 
+
     componentDidMount = () => {
+        window.addEventListener('keydown', this.setKeyBoardLetter)
+
+        const updatedRow = sessionStorage.getItem('rows')
+        const rows = JSON.parse(updatedRow)
+
+        const updatedRowsReveal = sessionStorage.getItem('rowsReveal')
+        const rowsReveal = JSON.parse(updatedRowsReveal)
+
+        const activeRowString = sessionStorage.getItem('activeRow')
+        const activeRow = JSON.parse(activeRowString)
+        
+
+        if (rows !== null && rowsReveal !== null) {
+            this.setState({
+                rows: rows,
+                rowsReveal: rowsReveal,
+                activeRow: activeRow
+            })
+        }
+
+
         const encrypted = this.props.word;
         const decrypted = CryptoJS.DES.decrypt(encrypted, "Jason8104");
         const string = decrypted.toString(CryptoJS.enc.Utf8)
         const goldenWord = string.split('')
         this.setState({
             name: this.props.name,
-            goldenWord: goldenWord
+            goldenWord: goldenWord,
+            url: encrypted
         })
-        console.log(goldenWord)
     }
 
 
@@ -57,21 +80,30 @@ class Game extends Component {
             })
         } 
     }
+
+    setKeyBoardLetter = (event) => {
+        let Letter = event.key.toUpperCase()
+        this.setLetterHandler(Letter)
+    }
+
     
     setLetterHandler = (letter) => {
-        this.changePositionHandler()
-        if (!this.state.endGame) {
+        if (letter === 'ENTER') {
+            this.enterWordHandler()
+        } else if (letter === 'BACKSPACE') {
+            this.removeLetterHandler()
+        } else if (!this.state.endGame) {
             if (this.state.postion < 5) {
                 let rows = [...this.state.rows]
                 let row = [...this.state.rows[this.state.activeRow]]
                 row[this.state.postion] = letter
                 rows[this.state.activeRow] = row
                 this.setState({
-                   rows: rows
+                    rows: rows,
                 })
             }
         }
-        
+        this.changePositionHandler()
     }
 
     removeLetterHandler = () => {
@@ -81,7 +113,7 @@ class Game extends Component {
         rows[this.state.activeRow] = row
         this.setState({
             rows: rows,
-            postion: this.state.postion -1
+            postion: this.state.postion - 1
         })
 
         if (this.state.postion > 0) {
@@ -98,12 +130,14 @@ class Game extends Component {
 
         if (this.state.postion === 5) {
             if (inWordList) {
-                this.setState({
-                    activeRow: this.state.activeRow + 1,
-                    postion: 0,
-                    word: word
-                })
                 this.checkLetterPositionHandler()
+                this.setState({
+                    postion: 0,
+                    word: word,
+                    activeRow: this.state.activeRow + 1,
+                })
+                const newActiveRow = this.state.activeRow + 1
+                sessionStorage.setItem('activeRow', newActiveRow )
             } else {
                 alert('Not in word list')
             }
@@ -114,7 +148,6 @@ class Game extends Component {
                 endGameModal: true
             })
         }
-        
     }
 
     checkLetterPositionHandler = () => {
@@ -125,19 +158,9 @@ class Game extends Component {
         const wordle = this.state.rows[this.state.activeRow].join('').toLowerCase()
         const goldenWordle = this.state.goldenWord.join('').toLowerCase();
 
-        // if (goldenDoubleLetter) {
-        //     find = (goldenDoubleLetter, goldenWord) => {
-        //         const indexes = [],
-        //         const index = goldenWord.indexOf(goldenDoubleLetter);
-        //         while (index != -1) {
-        //             indexes.push(index)
-        //             index = goldenWord.indexOf(goldenDoubleLetter, index + 1)
-        //         }
-        //         return indexes
-        //     }
-        // }
+        console.log(doubleLetter)
+        console.log(goldenDoubleLetter)
 
-        // console.log( find(goldenDoubleLetter, goldenWord) )
 
         if (wordle === goldenWordle) {
             this.setState({
@@ -146,24 +169,28 @@ class Game extends Component {
             })
         }
 
+        //Green
+        // rowReveal[index] = 'Green'
+        // this.setState({
+        //     rowsReveal: rowsReveal
+        // })
+
         const rowsReveal = this.state.rowsReveal
         const rowReveal = rowsReveal[this.state.activeRow]
+
         word.forEach( (letter, index) => {
-            const inWord = goldenWord.includes(`${letter}`)
-            if (inWord) {
-                if (letter === goldenWord[index]) {
-                    //Green
-                    rowReveal[index] = 'Green'
-                    this.setState({
-                        rowsReveal: rowsReveal
-                    })
-                } else {
-                    //Orange
-                    rowReveal[index] = 'Orange'
-                    this.setState({
-                        rowsReveal: rowsReveal
-                    })
-                }
+            if (letter === goldenWord[index]) {
+                //Green
+                rowReveal[index] = 'Green'
+                this.setState({
+                    rowsReveal: rowsReveal
+                })
+            } else if (goldenWord.includes(letter)) {
+                //Orange
+                rowReveal[index] = 'Orange'
+                this.setState({
+                    rowsReveal: rowsReveal
+                })
             } else {
                 //Grey
                 rowReveal[index] = 'Grey'
@@ -171,7 +198,10 @@ class Game extends Component {
                     rowsReveal: rowsReveal
                 })
             }
-         })
+        });
+
+        sessionStorage.setItem('rows', JSON.stringify(this.state.rows))
+        sessionStorage.setItem('rowsReveal', JSON.stringify(this.state.rowsReveal))
     }
 
     share = () => {
@@ -208,11 +238,15 @@ class Game extends Component {
         })
     }
 
+
+
     render() {
         return (
             <div className={classes.Game}>
                 <div className={classes.Header}>
                     <h2 className={classes.Logo}>{this.state.name}'s Wordle</h2>
+                    <button onClick={() => console.log(this.state)}>click me</button>
+                    <button onClick={() => sessionStorage.clear()}>clear data</button>
                 </div>
                 <GameBoard 
                     rows={this.state.rows}

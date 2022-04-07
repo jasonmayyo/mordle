@@ -4,6 +4,16 @@ import {BsBackspace, BsConeStriped} from 'react-icons/bs'
 
 class gameKeyboard extends Component {
 
+    componentDidMount = () => {
+        const lettersString = sessionStorage.getItem('letters')
+        const letters = JSON.parse(lettersString)
+        if (letters !== null) {
+            this.setState({
+                letters: letters
+            })
+        }
+    }
+
     letterClicked = (letter) => {
         this.props.setLetter(letter)
     }
@@ -49,7 +59,6 @@ class gameKeyboard extends Component {
         {
             Letter: 'P',
             Status: 'KeyBoardD',
-            EndLetter: 'EndLetter'
         },
         {
             Letter: 'A',
@@ -134,6 +143,8 @@ class gameKeyboard extends Component {
                 letters: updatedLetters
             })
         });
+
+        sessionStorage.setItem('letters', JSON.stringify(updatedLetters))
     
     };
 
@@ -141,9 +152,6 @@ class gameKeyboard extends Component {
         const letters1 = this.state.letters.slice(0, 10)
         const letters2 = this.state.letters.slice(10, 19)
         const letters3 = this.state.letters.slice(19, 27)
-
-
-
         return (
             <div className='keyboardContainer'>
                 <div className='keysRow'>
