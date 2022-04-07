@@ -245,8 +245,6 @@ class Game extends Component {
             <div className={classes.Game}>
                 <div className={classes.Header}>
                     <h2 className={classes.Logo}>{this.state.name}'s Wordle</h2>
-                    <button onClick={() => console.log(this.state)}>click me</button>
-                    <button onClick={() => sessionStorage.clear()}>clear data</button>
                 </div>
                 <GameBoard 
                     rows={this.state.rows}
