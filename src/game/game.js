@@ -49,7 +49,6 @@ class Game extends Component {
 
         const activeRowString = sessionStorage.getItem('activeRow')
         const activeRow = JSON.parse(activeRowString)
-        
 
         if (rows !== null && rowsReveal !== null) {
             this.setState({
@@ -92,18 +91,17 @@ class Game extends Component {
             this.enterWordHandler()
         } else if (letter === 'BACKSPACE') {
             this.removeLetterHandler()
-        } else if (!this.state.endGame) {
-            if (this.state.postion < 5) {
-                let rows = [...this.state.rows]
-                let row = [...this.state.rows[this.state.activeRow]]
-                row[this.state.postion] = letter
-                rows[this.state.activeRow] = row
-                this.setState({
-                    rows: rows,
-                })
-            }
+        } else if (!this.state.endGame && this.state.postion < 5) {
+            let rows = [...this.state.rows]
+            let row = [...this.state.rows[this.state.activeRow]]
+            row[this.state.postion] = letter
+            rows[this.state.activeRow] = row
+            this.setState({
+                rows: rows,
+            })
+            this.changePositionHandler()
         }
-        this.changePositionHandler()
+        
     }
 
     removeLetterHandler = () => {
@@ -113,8 +111,8 @@ class Game extends Component {
         rows[this.state.activeRow] = row
         this.setState({
             rows: rows,
-            postion: this.state.postion - 1
         })
+
 
         if (this.state.postion > 0) {
             this.setState({
@@ -136,8 +134,7 @@ class Game extends Component {
                     word: word,
                     activeRow: this.state.activeRow + 1,
                 })
-                const newActiveRow = this.state.activeRow + 1
-                sessionStorage.setItem('activeRow', newActiveRow )
+                sessionStorage.setItem('activeRow', this.state.activeRow )
             } else {
                 alert('Not in word list')
             }
@@ -158,9 +155,6 @@ class Game extends Component {
         const wordle = this.state.rows[this.state.activeRow].join('').toLowerCase()
         const goldenWordle = this.state.goldenWord.join('').toLowerCase();
 
-        console.log(doubleLetter)
-        console.log(goldenDoubleLetter)
-
 
         if (wordle === goldenWordle) {
             this.setState({
@@ -175,30 +169,48 @@ class Game extends Component {
         //     rowsReveal: rowsReveal
         // })
 
+        var results = [];
+        var idx = word.indexOf(doubleLetter[0]);
+        while (idx !== -1) {
+            results.push(idx);
+            idx = word.indexOf(doubleLetter[0], idx + 1);
+        }
+
+        console.log(results)
+
         const rowsReveal = this.state.rowsReveal
         const rowReveal = rowsReveal[this.state.activeRow]
 
-        word.forEach( (letter, index) => {
-            if (letter === goldenWord[index]) {
+        for (let i = 0; i < 5; i++ ) {
+            if (word[i] === goldenWord[i]) {
                 //Green
-                rowReveal[index] = 'Green'
+                rowReveal[i] = 'Green'
                 this.setState({
                     rowsReveal: rowsReveal
                 })
-            } else if (goldenWord.includes(letter)) {
+            } else if (goldenWord.includes(word[i]) && goldenWord.includes(doubleLetter[0]) && doubleLetter.length > 0) {
+                const indexOrange = results[0]
+                const indexGrey = results[1]
                 //Orange
-                rowReveal[index] = 'Orange'
+                rowReveal[indexOrange] = 'Orange'
+                rowReveal[indexGrey] = 'Grey'
                 this.setState({
                     rowsReveal: rowsReveal
                 })
-            } else {
+            } else if (goldenWord.includes(word[i])) {
+                //Orange
+                rowReveal[i] = 'Orange'
+                this.setState({
+                    rowsReveal: rowsReveal
+                })
+            } else if (!goldenWord.includes(word[i])) {
                 //Grey
-                rowReveal[index] = 'Grey'
+                rowReveal[i] = 'Grey'
                 this.setState({
                     rowsReveal: rowsReveal
                 })
-            }
-        });
+            } 
+        }
 
         sessionStorage.setItem('rows', JSON.stringify(this.state.rows))
         sessionStorage.setItem('rowsReveal', JSON.stringify(this.state.rowsReveal))
