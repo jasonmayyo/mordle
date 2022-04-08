@@ -4,8 +4,8 @@ import GameBoard from '../gameBoard/gameBoard'
 import classes from './game.module.css'
 import {Link} from 'react-router-dom'
 import {AiOutlineCloseCircle} from 'react-icons/ai'
-import {BsConeStriped, BsFillShareFill} from 'react-icons/bs'
-import CryptoJS, { enc } from 'crypto-js'
+import {BsFillShareFill} from 'react-icons/bs'
+import CryptoJS from 'crypto-js'
 import Aux from '../hoc/Aux'
 
 
@@ -123,7 +123,6 @@ class Game extends Component {
 
     enterWordHandler = () => {
         const word = this.state.rows[this.state.activeRow].join('').toLowerCase()
-        const goldenWord = this.state.goldenWord.join('').toLowerCase()
         const inWordList = this.props.words.includes(`${word}`)
 
         if (this.state.postion === 5) {
@@ -132,18 +131,21 @@ class Game extends Component {
                 this.setState({
                     postion: 0,
                     word: word,
-                    activeRow: this.state.activeRow + 1,
                 })
-                sessionStorage.setItem('activeRow', this.state.activeRow )
+                this.setState({
+                    activeRow: this.state.activeRow + 1,
+                }, () => {
+                    if (this.state.activeRow === 6) {
+                        this.setState({
+                            endGameModal: true,
+                            endGame: true
+                        })
+                    }
+                    sessionStorage.setItem('activeRow', this.state.activeRow )
+                })
             } else {
                 alert('Not in word list')
             }
-        }
-
-        if (this.state.activeRow >= 5) {
-            this.setState({
-                endGameModal: true
-            })
         }
     }
 
@@ -151,10 +153,8 @@ class Game extends Component {
         const word = this.state.rows[this.state.activeRow]
         const goldenWord = this.state.goldenWord
         const doubleLetter = word.filter( (letter , index) => word.indexOf(`${letter}`) !== index)
-        const goldenDoubleLetter = goldenWord.filter( (letter, index) => goldenWord.indexOf(`${letter}`) !== index)
         const wordle = this.state.rows[this.state.activeRow].join('').toLowerCase()
         const goldenWordle = this.state.goldenWord.join('').toLowerCase();
-
 
         if (wordle === goldenWordle) {
             this.setState({
@@ -163,20 +163,12 @@ class Game extends Component {
             })
         }
 
-        //Green
-        // rowReveal[index] = 'Green'
-        // this.setState({
-        //     rowsReveal: rowsReveal
-        // })
-
         var results = [];
         var idx = word.indexOf(doubleLetter[0]);
         while (idx !== -1) {
             results.push(idx);
             idx = word.indexOf(doubleLetter[0], idx + 1);
         }
-
-        console.log(results)
 
         const rowsReveal = this.state.rowsReveal
         const rowReveal = rowsReveal[this.state.activeRow]
@@ -257,6 +249,9 @@ class Game extends Component {
             <div className={classes.Game}>
                 <div className={classes.Header}>
                     <h2 className={classes.Logo}>{this.state.name}'s Wordle</h2>
+                    <button onClick={() => sessionStorage.clear()}> clear data</button>
+                    <button onClick={() => console.log(this.state)}> state</button>
+
                 </div>
                 <GameBoard 
                     rows={this.state.rows}

@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import classes from './createWordle.module.css'
 import CryptoJS from 'crypto-js'
+import Aux from '../hoc/Aux'
 
 const CreateWorlde = (props) => {
 
@@ -48,10 +49,10 @@ const CreateWorlde = (props) => {
                 <p className={classes.Label}>Your Word</p>
                 <input type='text' className={classes.Input} onChange={setWordHandler}/>
                 {next ? (
-                    <div>
+                    <Aux>
                         <p className={classes.Label}>Your Name</p>
                         <input type='text' className={classes.Input} onChange={setNameHandler}/>
-                    </div>
+                    </Aux>
                 ) : null}
                 <button 
                     className={copied ? classes.Copied : classes.Button}
